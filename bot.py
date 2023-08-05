@@ -2,7 +2,7 @@ import discord
 import data_pull
 
 def run_discord_bot():
-    TOKEN = 'ODQ5NDU1NjU4NTYxNDM3NzA3.GHIYQB.dyPt2P-4C8kndnKg6D3noab4xjr1Klra2N7INs'
+    TOKEN = 'ODQ5NDU1NjU4NTYxNDM3NzA3.GEmSUD.doEzJLk3riloGheoVIIbLfe-EhkGWJ1xOmxETk'
     client = discord.Client(intents=discord.Intents.default())
 
     @client.event
