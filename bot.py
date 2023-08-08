@@ -1,8 +1,14 @@
 import discord
 import data_pull
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 
 def run_discord_bot():
-    TOKEN = 'ODQ5NDU1NjU4NTYxNDM3NzA3.GEmSUD.doEzJLk3riloGheoVIIbLfe-EhkGWJ1xOmxETk'
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+
+    TOKEN = os.environ.get("DISCORD_TOKEN")
     client = discord.Client(intents=discord.Intents.default())
 
     @client.event
