@@ -1,18 +1,20 @@
 import discord
-import data_pull
-import os
-from os.path import join, dirname
-from dotenv import load_dotenv
+from discord.ext import commands 
 
-def run_discord_bot():
-    dotenv_path = join(dirname(__file__), '.env')
-    load_dotenv(dotenv_path)
+intents = discord.Intents.default() 
+intents.messages = True
 
-    TOKEN = os.environ.get("DISCORD_TOKEN")
-    client = discord.Client(intents=discord.Intents.default())
+bot = commands.Bot(command_prefix='!', intents=intents)
 
-    @client.event
-    async def on_ready():
-        print(f'{client.user} is no running!')
+@bot.command()
+async def scrape(ctx):
+  await bot.cogs["internship_scraper"].scrape_internships()
+@bot.event
+async def on_ready():
+    print('Bot ready!')
+    
+bot.load_extension('internship_scraper') 
 
-    client.run(TOKEN)
+bot.run('NzYzOTk3ODkwNzY2NDM4NDAx.GjuWeO.tacljJO8Iwb_VwYLWqQjtDq3JX9AZoVQBCiMYk')
+bot.load_extension('internship_scraper')
+print('got here')
