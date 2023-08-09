@@ -8,33 +8,32 @@ intents = discord.Intents.default()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-internships = []
 
-@tasks.loop(seconds=30)
-async def check_internships():
-    print("Starting bot...")
-    url = 'https://www.linkedin.com/jobs/intern-software-engineer-jobs'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    print("Scraping LinkedIn...")
-    new_listings = []
-    print("Coopabyte")
-    title = soup.select_one(".base-search-card__title").text
-    company = soup.select_one('.base-search-card__subtitle').text
-    date = soup.select_one('.job-search-card__listdate').text
-        
-    internship = {'title': title, 'company': company, 'date': date}
-    if internship not in internships:
-            new_listings.append(internship)
-    
-    for internship in new_listings:
-        print("Posting new internships...")
-        internships.append(internship)
-        channel = bot.get_channel(1138319147705569331) # channel ID
-        await channel.send(f"New Internship:\n{internship['title']}\n{internship['company']}\nListed on: {internship['date']}") 
+
+
+
 @bot.event
 async def on_ready():
-    check_internships.start()
     print('Bot is ready.')
+    linkedin_login()
+
+def linkedin_login():
+    #navigates to page at given URL
+    driver.get('https://www.linkedin.com')
+
+    #signing into LinkedIn
+    username_box = driver.find_element(By.ID, 'session_key')
+    username_box.send_keys(USER_EMAIL)
+
+    sleep(0.5)
+
+    password_box = driver.find_element(By.ID, 'session_password')
+    password_box.send_keys(USER_PASSWORD)
+
+    sleep(0.5)
+
+    sign_in_button = driver.find_element(By.XPATH, '//*[@type="submit"]')
+    sign_in_button.click()
+    sleep(15)
     
 bot.run('NzYzOTk3ODkwNzY2NDM4NDAx.GjuWeO.tacljJO8Iwb_VwYLWqQjtDq3JX9AZoVQBCiMYk')
