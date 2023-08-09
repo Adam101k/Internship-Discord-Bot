@@ -1,43 +1,30 @@
-# Imports
-import requests # For making HTTP requests
-import time # For sleeps/pauses
-import discord # Discord API library
-from bs4 import BeautifulSoup # HTML parsing
-import logging # For logging
-from datetime import timedelta # For cache expirations
-from discord.ext import tasks, commands # Discord.py extensions
+import discord
+from discord.ext import commands, tasks
 
-# Set up logger
-logger = logging.getLogger(__name__)  
+# LinkedIn scraper methods
+async def scrape_jobs():
+   # Scrape LinkedIn
+   return jobs
+   
+async def post_jobs(channel, jobs):
+   # Post new jobs
+   
+# Cog
+class JobScraper(commands.Cog):
 
-# Config
-INTS_CACHE_TIME = timedelta(hours=6) # Cache expiration
-
-# Cog class
-class InternshipScraper(commands.Cog):
-
-    def __init__(self, bot):
-        self.bot = bot
-        self.last_scraped = None # Track last scrape time
-        self.internships = [] # Store scraped internships
+  def __init__(self, bot):
+    self.bot = bot
     
-    # Methods  
-    def scrape_internships(self):
-        """Scrape internships from LinkedIn"""
-        
-        # Code to scrape internships...
-        
-    def cache_expired(self): 
-        """Check if cache timeout has passed"""
+  @tasks.loop(hours=24)
+  async def scrape_task(self):
+    channel = bot.get_channel(1138319147705569331)
+    jobs = await scrape_jobs()
+    await post_jobs(channel, jobs)
+      
+  @commands.command()
+  async def scrape(self, ctx):
+    await self.scrape_task()
     
-        # Cache expiration check...
-    
-    # Looping task 
-    @tasks.loop(hours=24)  
-    async def post_internships(self):
-    
-        # Post new internships to Discord
-        
-    # Cog setup  
-    def setup(bot):
-        bot.add_cog(InternshipScraper(bot))
+# Bot      
+intents = discord.Intents.default()
+intents.messages = True
