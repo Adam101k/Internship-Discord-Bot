@@ -17,15 +17,12 @@ import os
 
 
 load_dotenv()
-USER_EMAIL = os.getenv('USER_EMAIL')
-USER_PASSWORD = os.getenv('USER_PASSWORD')
 USER_DATA_DIR = os.getenv('USER_DATA_DIR')
 LINKEDIN_URL = os.getenv('LINKEDIN_URL')
 
-
-
 def get_jobs():
     opts = Options()
+    opts.add_argument('user-data-dir=' + USER_DATA_DIR)
     driver = webdriver.Chrome(options=opts, service=Service(executable_path=ChromeDriverManager().install()))
 
     #navigates to given url
@@ -40,13 +37,18 @@ def get_jobs():
         sleep(1)
 
     jobs = []
-    job_posts = driver.find_elements(By.CSS_SELECTOR, ".job-card-container") #list of every HTML container of each job posting on the page
+    
+    #list of every HTML container of each job posting on the page
+    job_posts = driver.find_elements(By.CSS_SELECTOR, ".job-card-container") 
     for job_post in job_posts:
-        title = job_post.find_element(By.CSS_SELECTOR, "job-card-list__title").text
+        title = job_post.find_element(By.CSS_SELECTOR, ".job-card-list__title").text
         company = job_post.find_element(By.CSS_SELECTOR, ".job-card-container__primary-description").text
         # date = job_post.find_element('??').text
         picture = job_post.find_element(By.CSS_SELECTOR, "img.ember-view").get_attribute('src')
         link = job_post.find_element(By.CSS_SELECTOR, "a.job-card-list__title").get_attribute('href').split('?eBP')[0]
-        jobs.append(title, company, picture, link)
+        jobs.append((title, company, picture, link))
 
     driver.quit()
+    return jobs
+
+    
