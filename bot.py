@@ -77,6 +77,10 @@ async def monitor_linkedin():
 
             await MAIN_CHANNEL.send(embed=embed)
 
-    await send_jobs()
+    while True:
+        await MAIN_CHANNEL.send('Getting new job posts...')
+        await send_jobs()
+        await MAIN_CHANNEL.send('Waiting for 12 hours...')
+        sleep(60 * 60 * 12) #sleep for 12 hours
     
 bot.run(BOT_TOKEN)
