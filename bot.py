@@ -10,6 +10,7 @@ from time import sleep
 from dotenv import load_dotenv
 import scraper
 import os
+import json
 
 intents = discord.Intents.default()
 
@@ -68,19 +69,47 @@ async def monitor_linkedin():
 
         await MAIN_CHANNEL.send('# of jobs scraped:' + str(len(jobs)))
 
+        posted_jobs_file = get_posted_jobs()
+        posted_jobs = set(posted_jobs_file['posted_jobs'])
+
+        num_new_jobs = 0
         for job in jobs:
             title, company, picture, link = job
+
+            job_post_id = title + company
+            if job_post_id in posted_jobs: #skips job if it was already posted
+                continue
+
+            num_new_jobs += 1
+            posted_jobs_file['posted_jobs'].append(job_post_id)
+            posted_jobs.add(job_post_id)
 
             embed = discord.Embed(title=title, url=link)
             embed.set_author(name=company)
             embed.set_thumbnail(url=picture)
 
             await MAIN_CHANNEL.send(embed=embed)
+        
+        save_posted_jobs(posted_jobs_file)
+        await MAIN_CHANNEL.send(str(num_new_jobs) + " new jobs")
 
     while True:
         await MAIN_CHANNEL.send('Getting new job posts...')
         await send_jobs()
         await MAIN_CHANNEL.send('Waiting for 12 hours...')
         sleep(60 * 60 * 12) #sleep for 12 hours
+
+#gets json file of posted jobs
+def get_posted_jobs():
+    with open('./posted_jobs.json') as file:
+        posted_jobs = json.load(file)
+        return posted_jobs
+
+#writes to and saves json file of posted jobs
+def save_posted_jobs(posted_jobs_file):
+    with open('./posted_jobs.json', 'w') as file:
+        file.seek(0)
+        json.dump(posted_jobs_file, file, indent=4)
+        file.truncate()
     
 bot.run(BOT_TOKEN)

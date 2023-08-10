@@ -1,6 +1,15 @@
+#Discord Bot Token
 BOT_TOKEN = ''
+
+#used for the Bot to login to LinkedIn
 USER_EMAIL = ''
 USER_PASSWORD = ''
+
+#designate a directory for Selenium to store user data
 USER_DATA_DIR = ''
+
+#LinkedIn URL from which jobs will be scraped
 LINKEDIN_URL = ''
+
+#Discord Channel where the Bot will send messages
 CHANNEL_ID = ''
