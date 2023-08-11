@@ -57,17 +57,18 @@ async def monitor_linkedin():
                 num_duplicates += 1
                 continue
 
-            num_new_jobs += 1
-            posted_jobs_file['posted_jobs'].append(job_post_id)
-            posted_jobs.add(job_post_id)
+            if 'intern' in title.lower() or 'internship' in title.lower():
+                num_new_jobs += 1
+                posted_jobs_file['posted_jobs'].append(job_post_id)
+                posted_jobs.add(job_post_id)
 
-            embed = discord.Embed(title=title, url=link)
-            embed.set_author(name=company)
-            embed.set_thumbnail(url=picture)
-            embed.add_field(name='Location', value=location)
-            embed.add_field(name='Date', value=time)
+                embed = discord.Embed(title=title, url=link)
+                embed.set_author(name=company)
+                embed.set_thumbnail(url=picture)
+                embed.add_field(name='Location', value=location)
+                embed.add_field(name='Date', value=time)
 
-            await MAIN_CHANNEL.send(embed=embed)
+                await MAIN_CHANNEL.send(embed=embed)
         
         save_posted_jobs(posted_jobs_file)
         await MAIN_CHANNEL.send(str(num_new_jobs) + " new jobs")
