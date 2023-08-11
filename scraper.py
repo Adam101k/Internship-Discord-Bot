@@ -43,12 +43,16 @@ def get_jobs():
     for job_post in job_posts:
         title = job_post.find_element(By.CSS_SELECTOR, ".job-card-list__title").text
         company = job_post.find_element(By.CSS_SELECTOR, ".job-card-container__primary-description").text
-        # date = job_post.find_element('??').text
+        location = job_post.find_element(By.CSS_SELECTOR, ".job-card-container__metadata-item ").text
         picture = job_post.find_element(By.CSS_SELECTOR, "img.ember-view").get_attribute('src')
         link = job_post.find_element(By.CSS_SELECTOR, "a.job-card-list__title").get_attribute('href').split('?eBP')[0]
-        jobs.append((title, company, picture, link))
+        jobs.append((title, company, location, picture, link))
 
     driver.quit()
     return jobs
 
     
+if __name__ == "__main__":
+    jobs = get_jobs()
+    df = pd.DataFrame(jobs, columns=["Title", "Company", "Location", "Picture", "Link"])
+    print(df.to_string())

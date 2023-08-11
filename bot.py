@@ -67,14 +67,14 @@ async def monitor_linkedin():
     async def send_jobs():
         jobs = scraper.get_jobs()
 
-        await MAIN_CHANNEL.send('# of jobs scraped:' + str(len(jobs)))
+        await MAIN_CHANNEL.send('#Number of jobs scraped:' + str(len(jobs)))
 
         posted_jobs_file = get_posted_jobs()
         posted_jobs = set(posted_jobs_file['posted_jobs'])
 
         num_new_jobs = 0
         for job in jobs:
-            title, company, picture, link = job
+            title, company,location, picture, link = job
 
             job_post_id = title + company
             if job_post_id in posted_jobs: #skips job if it was already posted
@@ -87,6 +87,7 @@ async def monitor_linkedin():
             embed = discord.Embed(title=title, url=link)
             embed.set_author(name=company)
             embed.set_thumbnail(url=picture)
+            embed.add_field(name='Location', value=location)
 
             await MAIN_CHANNEL.send(embed=embed)
         
