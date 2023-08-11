@@ -10,10 +10,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
 from selenium.webdriver.common.keys import Keys
-
+from bs4 import BeautifulSoup
 from selenium.webdriver import ActionChains
 from dotenv import load_dotenv
 import os
+import re
 
 
 load_dotenv()
@@ -37,7 +38,7 @@ def get_jobs():
         sleep(1)
 
     jobs = []
-    
+    soup = BeautifulSoup(LINKEDIN_URL, 'html.parser')
     #list of every HTML container of each job posting on the page
     job_posts = driver.find_elements(By.CSS_SELECTOR, ".job-card-container") 
     for job_post in job_posts:
@@ -46,6 +47,10 @@ def get_jobs():
         location = job_post.find_element(By.CSS_SELECTOR, ".job-card-container__metadata-item ").text
         picture = job_post.find_element(By.CSS_SELECTOR, "img.ember-view").get_attribute('src')
         link = job_post.find_element(By.CSS_SELECTOR, "a.job-card-list__title").get_attribute('href').split('?eBP')[0]
+        pattern = ['$']
+        if re.search(pattern, soup):
+            re.compile
+
         jobs.append((title, company, location, picture, link))
 
     driver.quit()
