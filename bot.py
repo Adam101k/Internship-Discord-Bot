@@ -58,7 +58,7 @@ async def monitor_linkedin():
                 num_duplicates += 1
                 continue
 
-            if 'intern' in title.lower() or 'internship' in title.lower():
+            if not('intern' in title.lower() or 'internship' in title.lower()):
                 num_non_internships += 1
                 continue
             
