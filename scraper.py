@@ -30,6 +30,14 @@ def get_jobs():
     driver.get(LINKEDIN_URL)
     sleep(5)
 
+    #filters jobs by past week on LinkedIn
+    WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".filter-button"))).click()
+    sleep(2)
+    driver.find_element(By.ID, "f_TPR-1").click()
+    sleep(2)
+    driver.find_element(By.CSS_SELECTOR, ".filter__submit-button").click()
+    sleep(5)
+
     #scrolls down job list 15 times to load all postings
     job_list_element = driver.find_element(By.CSS_SELECTOR, ".jobs-search__results-list")
     for i in range(10):
