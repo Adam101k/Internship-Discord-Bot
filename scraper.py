@@ -56,7 +56,7 @@ def get_jobs():
         picture = job_post.find_element(By.CSS_SELECTOR, ".artdeco-entity-image").get_attribute('src')
         link = job_post.find_element(By.CSS_SELECTOR,'.base-card__full-link').get_attribute('href')
 
-        time = job_post.find_element(By.XPATH, "//*[starts-with(@class, 'job-search-card__listdate')]")
+        time = job_post.find_element(By.CSS_SELECTOR, "div>div>time")
         time_posted = time.text
         date = time.get_attribute('datetime')
         jobs.append((title, company, location, picture, link, time_posted, date))

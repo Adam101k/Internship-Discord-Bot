@@ -45,6 +45,7 @@ async def monitor_linkedin():
 
         num_new_jobs = 0
         num_duplicates = 0
+        num_non_internships = 0
         for job in jobs:
             title, company, location, picture, link, time_posted, date = job
 
@@ -58,21 +59,25 @@ async def monitor_linkedin():
                 continue
 
             if 'intern' in title.lower() or 'internship' in title.lower():
-                num_new_jobs += 1
-                posted_jobs_file['posted_jobs'].append(job_post_id)
-                posted_jobs.add(job_post_id)
+                num_non_internships += 1
+                continue
+            
+            num_new_jobs += 1
+            posted_jobs_file['posted_jobs'].append(job_post_id)
+            posted_jobs.add(job_post_id)
 
-                embed = discord.Embed(title=title, url=link)
-                embed.set_author(name=company)
-                embed.set_thumbnail(url=picture)
-                embed.add_field(name='Location', value=location)
-                embed.add_field(name='Date', value=time)
+            embed = discord.Embed(title=title, url=link)
+            embed.set_author(name=company)
+            embed.set_thumbnail(url=picture)
+            embed.add_field(name='Location', value=location)
+            embed.add_field(name='Date', value=time)
 
-                await MAIN_CHANNEL.send(embed=embed)
+            await MAIN_CHANNEL.send(embed=embed)
         
         save_posted_jobs(posted_jobs_file)
         await MAIN_CHANNEL.send(str(num_new_jobs) + " new jobs")
         await MAIN_CHANNEL.send(str(num_duplicates) + " duplicate posts")
+        await MAIN_CHANNEL.send(str(num_non_internships) + " non-internship posts")
 
     while True:
         await MAIN_CHANNEL.send('Getting new job posts...')
