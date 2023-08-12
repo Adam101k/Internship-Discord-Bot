@@ -30,6 +30,14 @@ def get_jobs():
     driver.get(LINKEDIN_URL)
     sleep(5)
 
+    #filters jobs by past week on LinkedIn
+    WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".filter-button"))).click()
+    sleep(2)
+    driver.find_element(By.ID, "f_TPR-1").click()
+    sleep(2)
+    driver.find_element(By.CSS_SELECTOR, ".filter__submit-button").click()
+    sleep(5)
+
     #scrolls down job list 15 times to load all postings
     job_list_element = driver.find_element(By.CSS_SELECTOR, ".jobs-search__results-list")
     for i in range(10):
@@ -48,7 +56,7 @@ def get_jobs():
         picture = job_post.find_element(By.CSS_SELECTOR, ".artdeco-entity-image").get_attribute('src')
         link = job_post.find_element(By.CSS_SELECTOR,'.base-card__full-link').get_attribute('href')
 
-        time = job_post.find_element(By.XPATH, "//*[starts-with(@class, 'job-search-card__listdate')]")
+        time = job_post.find_element(By.CSS_SELECTOR, "div>div>time")
         time_posted = time.text
         date = time.get_attribute('datetime')
         jobs.append((title, company, location, picture, link, time_posted, date))
