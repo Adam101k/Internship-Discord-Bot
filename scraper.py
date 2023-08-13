@@ -10,11 +10,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
 from selenium.webdriver.common.keys import Keys
-
+import datetime
+import dateparser
 from selenium.webdriver import ActionChains
 from dotenv import load_dotenv
 import os
-
 
 load_dotenv()
 USER_DATA_DIR = os.getenv('USER_DATA_DIR')
@@ -56,9 +56,17 @@ def get_jobs():
         picture = job_post.find_element(By.CSS_SELECTOR, ".artdeco-entity-image").get_attribute('src')
         link = job_post.find_element(By.CSS_SELECTOR,'.base-card__full-link').get_attribute('href')
 
+        #getting the time
         time = job_post.find_element(By.CSS_SELECTOR, "div>div>time")
         time_posted = time.text
         date = time.get_attribute('datetime')
+
+        time_words = ['hours', 'hour', 'minutes', 'min', 'seconds', 'sec', 'day', 'days']
+        if any([x in time_posted for x in time_words]):
+            date = dateparser.parse(time_posted)
+        else:
+            date = dateparser.parse(date)
+
         jobs.append((title, company, location, picture, link, time_posted, date))
 
     driver.quit()
