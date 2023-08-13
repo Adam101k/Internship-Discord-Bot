@@ -43,14 +43,16 @@ async def monitor_linkedin():
         posted_jobs_file = get_posted_jobs()
         posted_jobs = set(posted_jobs_file['posted_jobs'])
 
+        #sorting jobs by date posted in descending order
+        jobs = sorted(jobs, key=datetime_sort)
+
         num_new_jobs = 0
         num_duplicates = 0
         num_non_internships = 0
         for job in jobs:
             title, company, location, picture, link, time_posted, date = job
 
-            YMD = date.split('-')
-            formatted_time = datetime.date(int(YMD[0]), int(YMD[1]), int(YMD[2])).strftime('%b %d')
+            formatted_time = date.strftime('%b %d')
             time = time_posted + ' - ' + formatted_time
 
             job_post_id = title + company
@@ -84,6 +86,11 @@ async def monitor_linkedin():
         await send_jobs()
         await MAIN_CHANNEL.send('Waiting for 12 hours...')
         sleep(60 * 60 * 12) #sleep for 12 hours
+
+#key function for jobs sorting
+def datetime_sort(tuple):
+    time = tuple[-1]
+    return time.timestamp()
 
 #gets json file of posted jobs
 def get_posted_jobs():
