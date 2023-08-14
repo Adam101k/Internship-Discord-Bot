@@ -14,7 +14,7 @@ To start off, before you can begin developing on this bot, you'll need to instal
 
 Everything found within the env is kept hidden to prevent the leaking of discord bot tokens or other personal information. Each user will be provided a template file named ".env(example)", which will contain the following:
 
-1. A "BOT_TOKEN", where you simply need to place in the bot token that you're currently running
+1. "BOT_TOKEN", where you simply need to place in the bot token that you're currently running
 
 2. "USER_DATA_DIR", which should link to a local folder where user cookies will be stored. The location of this folder is up to the user, but make sure the location is placed in the ".env"
 
