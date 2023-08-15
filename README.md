@@ -21,3 +21,8 @@ Everything found within the env is kept hidden to prevent the leaking of discord
 3. "LINKEDIN_URL" is the url of the Page that you want scraped, this can be a page with an already filled in search result so you can get specific jobs in the queue
 
 4. "CHANNEL_ID" is the channel that the bot will message in, you can find the channel ID by right clicking a channel and selected the bottom option listed as "Copy Channel ID"
+
+## Credits
+List your collaborators, if any, with links to their GitHub profiles.
+
+Asher - https://github.com/asherdrake Cooper - https://github.com/crowoh Chris - https://github.com/CrashPr0 Adam - https://github.com/Adam101k
