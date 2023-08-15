@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import scraper
 import os
 import json
+import urllib
 
 intents = discord.Intents.default()
 
@@ -73,6 +74,7 @@ async def monitor_linkedin():
             embed.set_thumbnail(url=picture)
             embed.add_field(name='Location', value=location)
             embed.add_field(name='Date', value=time)
+            embed.add_field(name="Levels.fyi", value=f"[{job_post_id} at Levels.fyi]({get_levels_url(job_post_id)})")
 
             await MAIN_CHANNEL.send(embed=embed)
         
@@ -91,6 +93,10 @@ async def monitor_linkedin():
 def datetime_sort(tuple):
     time = tuple[-1]
     return time.timestamp()
+
+def get_levels_url(job_post_id):
+    base = "https://www.levels.fyi/internships/?track=Software%20Engineer&timeframe=2023%20%2F%202022&search="
+    return base + urllib.parse.quote_plus(job_post_id)
 
 #gets json file of posted jobs
 def get_posted_jobs():
