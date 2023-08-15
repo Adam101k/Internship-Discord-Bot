@@ -25,8 +25,6 @@ Everything found within the env is kept hidden to prevent the leaking of discord
 
 ## Credits
 
-List your collaborators, if any, with links to their GitHub profiles.
-
 Asher - https://github.com/asherdrake
 Cooper - https://github.com/crowoh
 Chris - https://github.com/CrashPr0
